@@ -1,0 +1,37 @@
+services:
+  init-db:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: python data.py
+    volumes:
+      - ./db:/app/db
+      - ./dataset:/app/dataset
+    profiles:
+      - init-db
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./db:/app/db
+    env_file:
+      - .env
+    environment:
+      - HUGGINGFACE_API_TOKEN=${HUGGINGFACE_API_TOKEN}
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "8001:8001"
+    depends_on:
+      - backend
+    env_file:
+      - .env
+    environment:
+      - BACKEND_URL=http://backend:8000

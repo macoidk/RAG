@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="chat-container">
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <button class="new-chat-btn" onclick="window.location.href='/chat/'">Новий чат</button>
+        </div>
+        <div class="chats-list">
+            {% for chat in chats %}
+            <div class="chat-item {% if current_chat.id == chat.id %}active{% endif %}">
+                <a href="?chat_id={{ chat.id }}">{{ chat.title }}</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="chat-main">
+        <div class="messages-container">
+            {% for message in messages %}
+            <div class="message {% if message.is_assistant %}assistant{% else %}user{% endif %}">
+                {{ message.content }}
+            </div>
+            {% endfor %}
+        </div>
+
+        <form method="post" class="message-form">
+            {% csrf_token %}
+            {% if current_chat %}
+            <input type="hidden" name="chat_id" value="{{ current_chat.id }}">
+            {% endif %}
+            <input type="text" name="message" placeholder="Введіть повідомлення..." required>
+            <button type="submit">Надіслати</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
