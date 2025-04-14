@@ -31,9 +31,7 @@ class EmbeddingsManager:
         os.makedirs(persist_directory, exist_ok=True)
 
     def prepare_documents(self, dataset: List[Dict]) -> List[Document]:
-        """
-        Підготовка документів з датасету для створення ембедінгів
-        """
+
         documents = []
         for item in dataset:
             metadata = {}
