@@ -45,7 +45,6 @@ class Dataset:
         else:
             paths = pdf_paths
 
-        # Filter existing paths
         return [path for path in paths if os.path.exists(path)]
 
     def _clean_text(self, text: str) -> str:
